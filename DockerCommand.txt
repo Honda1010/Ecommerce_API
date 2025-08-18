@@ -1,0 +1,4 @@
+- To Run
+docker start ecommerce-mysql
+- To Stop 
+docker stop ecommerce-mysql
