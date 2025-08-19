@@ -21,7 +21,7 @@ public class TransactionController {
     WalletRepo walletRepo;
     @Autowired
     TransactionRepo transactionRepo;
-    @GetMapping("/{UserId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<List<WalletTransaction>> TransactionHistory(@PathVariable int userId) {
         Wallets wallet = walletRepo.findByUserId(userId);
         if (wallet == null) {
