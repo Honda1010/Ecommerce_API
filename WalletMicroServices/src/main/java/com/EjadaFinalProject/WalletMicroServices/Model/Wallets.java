@@ -1,11 +1,11 @@
 package com.EjadaFinalProject.WalletMicroServices.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.List;
+
 @Entity
 public class Wallets {
     @Id
@@ -14,6 +14,17 @@ public class Wallets {
     @JsonIgnore
     private Integer userId;
     private double balance=0.0;
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<WalletTransaction> transactions;
+
+    public List<WalletTransaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<WalletTransaction> transactions) {
+        this.transactions = transactions;
+    }
 
     public Wallets() {
     }
