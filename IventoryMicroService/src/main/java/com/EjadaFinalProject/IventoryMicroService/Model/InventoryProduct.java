@@ -2,7 +2,8 @@ package com.EjadaFinalProject.IventoryMicroService.Model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "inventory_products")
@@ -13,7 +14,8 @@ public class InventoryProduct {
     @NotBlank(message = "Product name is required")
     private String productName;
     private String productDescription;
-    @NotBlank(message = "Product Price is required")
+    @NotNull(message = "Product price is required")
+    @Positive(message = "product price must be positive")
     private double productPrice;
     private int productQuantity=0;
 

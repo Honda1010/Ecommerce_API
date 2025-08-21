@@ -40,7 +40,7 @@ public class ProductService {
     }
     public InventoryProduct ReduceStock(int productId,int quantity) {
         return productRepo.findById(productId).map(p->{
-            if(p.getProductQuantity()<=quantity){
+            if(p.getProductQuantity()>quantity){
                 p.setProductQuantity(p.getProductQuantity()-quantity);
                 return productRepo.save(p);
             }
