@@ -1,9 +1,7 @@
 package com.EjadaFinalProject.IventoryMicroService.Controller;
 
 import com.EjadaFinalProject.IventoryMicroService.Model.InventoryProduct;
-import com.EjadaFinalProject.IventoryMicroService.Repo.ProductRepo;
 import com.EjadaFinalProject.IventoryMicroService.Service.ProductService;
-import com.netflix.discovery.converters.Auto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +19,7 @@ public class IventoryProductController {
     ResponseEntity<InventoryProduct> GetProductById(@PathVariable int id)
     {
         InventoryProduct foundedproduct= productService.findByProductId(id);
+
         return ResponseEntity.ok(foundedproduct);
     }
     @GetMapping(path = "/products")
