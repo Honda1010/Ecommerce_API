@@ -28,8 +28,15 @@ public class GlobalExceptionHandler extends  ResponseEntityExceptionHandler {
                 ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.NOT_FOUND);
-
     }
+    @ExceptionHandler(WalletAlreadyExistException.class)
+    public final ResponseEntity<ErrorDto> handleWalletAlreadyExistExceptions(Exception ex, WebRequest request) throws Exception {
+        ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
+                ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(WalletNotFoundException.class)
     public final ResponseEntity<ErrorDto> handleWalletNotFoundExceptions(Exception ex, WebRequest request) throws Exception {
         ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),

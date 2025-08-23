@@ -1,10 +1,8 @@
 package com.EjadaFinalProject.WalletMicroServices.Controller;
 
-import com.EjadaFinalProject.WalletMicroServices.Exceptions.WalletNotFoundException;
+
 import com.EjadaFinalProject.WalletMicroServices.Model.WalletTransaction;
-import com.EjadaFinalProject.WalletMicroServices.Model.Wallets;
-import com.EjadaFinalProject.WalletMicroServices.Repo.TransactionRepo;
-import com.EjadaFinalProject.WalletMicroServices.Repo.WalletRepo;
+import com.EjadaFinalProject.WalletMicroServices.Service.TransactionHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,16 +16,10 @@ import java.util.List;
 @RestController
 public class TransactionController {
     @Autowired
-    WalletRepo walletRepo;
-    @Autowired
-    TransactionRepo transactionRepo;
+    TransactionHistoryService transactionHistoryService;
     @GetMapping("/{userId}")
     public ResponseEntity<List<WalletTransaction>> TransactionHistory(@PathVariable int userId) {
-        Wallets wallet = walletRepo.findByUserId(userId);
-        if (wallet == null) {
-            throw new WalletNotFoundException("Wallet not found for user ID: " + userId);
-        }
-        List<WalletTransaction> transactions = transactionRepo.findByWallet_WalletId(wallet.getWalletId());
+        List<WalletTransaction> transactions = transactionHistoryService.GetTransactionHistory(userId);
         if (transactions.isEmpty()) {
             return ResponseEntity.noContent().build(); // No transactions found
         }
