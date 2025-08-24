@@ -3,6 +3,7 @@ package com.EjadaFinalProject.ShopMicroService.Controller;
 import com.EjadaFinalProject.ShopMicroService.Model.Cart;
 import com.EjadaFinalProject.ShopMicroService.Model.CartItem;
 import com.EjadaFinalProject.ShopMicroService.Service.CartService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,4 +40,5 @@ public class CartController {
         Cart cart= cartService.getCartByUserId(userId);
         return ResponseEntity.ok(cart);
     }
+
 }

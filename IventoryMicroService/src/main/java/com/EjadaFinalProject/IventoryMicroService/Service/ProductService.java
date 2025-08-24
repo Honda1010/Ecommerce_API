@@ -28,7 +28,15 @@ public class ProductService {
         productRepo.deleteById(productId);
     }
     public InventoryProduct AddProduct(InventoryProduct product) {
-        return productRepo.save(product);
+        // check if the product already exists
+        InventoryProduct FoundedProduct = productRepo.findByProductNameAndProductDescription(product.getProductName(), product.getProductDescription());
+        if (FoundedProduct != null) {
+            FoundedProduct.setProductQuantity(FoundedProduct.getProductQuantity()+product.getProductQuantity());
+            FoundedProduct = productRepo.save(FoundedProduct);
+            return FoundedProduct;
+        }else {
+            return productRepo.save(product);
+        }
     }
     public InventoryProduct UpdateProduct(int id,InventoryProduct product) {
         InventoryProduct FoundedProduct = productRepo.findById(id).orElse(null);
@@ -40,7 +48,7 @@ public class ProductService {
     }
     public InventoryProduct ReduceStock(int productId,int quantity) {
         return productRepo.findById(productId).map(p->{
-            if(p.getProductQuantity()>quantity){
+            if(p.getProductQuantity()>=quantity){
                 p.setProductQuantity(p.getProductQuantity()-quantity);
                 return productRepo.save(p);
             }

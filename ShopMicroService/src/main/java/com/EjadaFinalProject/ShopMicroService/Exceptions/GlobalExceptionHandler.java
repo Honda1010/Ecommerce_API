@@ -39,6 +39,23 @@ public class GlobalExceptionHandler extends  ResponseEntityExceptionHandler {
         return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.NOT_FOUND);
 
     }
+    @ExceptionHandler(OrderNotFoundException.class)
+    public final ResponseEntity<ErrorDto> handleOrderNotFoundExceptions(Exception ex, WebRequest request) throws Exception {
+        ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
+                ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.NOT_FOUND);
+
+    }
+    @ExceptionHandler(CartEmptyException.class)
+    public final ResponseEntity<ErrorDto> handleCartEmptyExceptions(Exception ex, WebRequest request) throws Exception {
+        ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
+                ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.BAD_REQUEST);
+
+    }
+
     @ExceptionHandler(ProductNotInStockException.class)
     public final ResponseEntity<ErrorDto> handleProductNotInStovkExceptions(Exception ex, WebRequest request) throws Exception {
         ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
@@ -57,6 +74,14 @@ public class GlobalExceptionHandler extends  ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(ProductAlreadyExistInShopException.class)
     public final ResponseEntity<ErrorDto> handleProductAlreadyExistInShopExceptions(Exception ex, WebRequest request) throws Exception {
+        ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
+                ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.CONFLICT);
+
+    }
+    @ExceptionHandler(OrderIsAlreadyCancelledException.class)
+    public final ResponseEntity<ErrorDto> handleOrderIsAlreadyCancelledException(Exception ex, WebRequest request) throws Exception {
         ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
                 ex.getMessage(), request.getDescription(false));
 

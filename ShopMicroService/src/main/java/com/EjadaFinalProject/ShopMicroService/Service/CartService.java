@@ -79,9 +79,13 @@ public class CartService {
             throw new CartNotFoundException("Cart not found for user id: " + userId);
         }
     }
+    @Transactional
     public void clearCart(int userId) {
         Cart cart = cartRepo.findByUserId(userId);
         if (cart != null) {
+            for ( CartItem item : cart.getCartItems()) {
+                cartItemRepo.deleteByProductIdAndCartId(item.getProductId(),cart.getId());
+            }
             cart.getCartItems().clear();
             cart.setTotalPrice(0.0);
             cartRepo.save(cart);
@@ -105,4 +109,5 @@ public class CartService {
             throw new CartNotFoundException("Cart not found for user id: " + userId);
         }
     }
+
 }

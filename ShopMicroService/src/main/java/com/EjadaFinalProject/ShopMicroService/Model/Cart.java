@@ -10,6 +10,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Integer Id;
+    @Column(unique = true)
     private Integer userId;
     @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL)
     private List<CartItem> cartItems;

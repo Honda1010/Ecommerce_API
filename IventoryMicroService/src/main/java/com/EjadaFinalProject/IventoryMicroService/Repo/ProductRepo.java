@@ -4,4 +4,5 @@ import com.EjadaFinalProject.IventoryMicroService.Model.InventoryProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepo extends JpaRepository<InventoryProduct, Integer> {
+    InventoryProduct findByProductNameAndProductDescription(String productName, String productDescription);
 }
