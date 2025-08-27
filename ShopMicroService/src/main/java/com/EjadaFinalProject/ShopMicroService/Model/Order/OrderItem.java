@@ -1,4 +1,4 @@
-package com.EjadaFinalProject.ShopMicroService.Model;
+package com.EjadaFinalProject.ShopMicroService.Model.Order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

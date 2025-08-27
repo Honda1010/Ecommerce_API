@@ -1,7 +1,7 @@
 package com.EjadaFinalProject.ShopMicroService.Controller;
 
-import com.EjadaFinalProject.ShopMicroService.Model.Payment;
-import com.EjadaFinalProject.ShopMicroService.Model.PaymentStatus;
+import com.EjadaFinalProject.ShopMicroService.Model.Payment.Payment;
+import com.EjadaFinalProject.ShopMicroService.Model.Payment.PaymentStatus;
 import com.EjadaFinalProject.ShopMicroService.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

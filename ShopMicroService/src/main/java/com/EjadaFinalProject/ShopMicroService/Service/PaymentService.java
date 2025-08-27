@@ -1,8 +1,8 @@
 package com.EjadaFinalProject.ShopMicroService.Service;
 
 import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderIsAlreadyPaidException;
-import com.EjadaFinalProject.ShopMicroService.Model.Payment;
-import com.EjadaFinalProject.ShopMicroService.Model.PaymentStatus;
+import com.EjadaFinalProject.ShopMicroService.Model.Payment.Payment;
+import com.EjadaFinalProject.ShopMicroService.Model.Payment.PaymentStatus;
 import com.EjadaFinalProject.ShopMicroService.Proxy.WalletProxy;
 import com.EjadaFinalProject.ShopMicroService.Repo.OrderRepo;
 import com.EjadaFinalProject.ShopMicroService.Repo.PaymentRepo;

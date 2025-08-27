@@ -1,6 +1,6 @@
 package com.EjadaFinalProject.ShopMicroService.Controller;
 
-import com.EjadaFinalProject.ShopMicroService.Model.Order;
+import com.EjadaFinalProject.ShopMicroService.Model.Order.Order;
 import com.EjadaFinalProject.ShopMicroService.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

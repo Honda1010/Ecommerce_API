@@ -5,7 +5,12 @@ import com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions.CartEmpt
 import com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions.CartNotFoundException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderIsAlreadyCancelledException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductQuntityIsNotEnoughInStockException;
-import com.EjadaFinalProject.ShopMicroService.Model.*;
+import com.EjadaFinalProject.ShopMicroService.Model.Cart.Cart;
+import com.EjadaFinalProject.ShopMicroService.Model.Cart.CartItem;
+import com.EjadaFinalProject.ShopMicroService.Model.Order.Order;
+import com.EjadaFinalProject.ShopMicroService.Model.Order.OrderItem;
+import com.EjadaFinalProject.ShopMicroService.Model.Order.OrderStatus;
+import com.EjadaFinalProject.ShopMicroService.Model.Product.ShopProduct;
 import com.EjadaFinalProject.ShopMicroService.Proxy.InventoryProxy;
 import com.EjadaFinalProject.ShopMicroService.Repo.CartRepo;
 import com.EjadaFinalProject.ShopMicroService.Repo.OrderRepo;

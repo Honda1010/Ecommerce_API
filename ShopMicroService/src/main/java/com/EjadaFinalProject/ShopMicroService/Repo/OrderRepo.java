@@ -1,6 +1,6 @@
 package com.EjadaFinalProject.ShopMicroService.Repo;
 
-import com.EjadaFinalProject.ShopMicroService.Model.Order;
+import com.EjadaFinalProject.ShopMicroService.Model.Order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

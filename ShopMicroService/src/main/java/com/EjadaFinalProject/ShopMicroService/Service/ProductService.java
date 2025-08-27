@@ -4,7 +4,7 @@ import com.EjadaFinalProject.ShopMicroService.Dto.InventoryProductDto;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.InventoryProductNotFoundException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductAlreadyExistInShopException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductNotInStockException;
-import com.EjadaFinalProject.ShopMicroService.Model.ShopProduct;
+import com.EjadaFinalProject.ShopMicroService.Model.Product.ShopProduct;
 import com.EjadaFinalProject.ShopMicroService.Proxy.InventoryProxy;
 import com.EjadaFinalProject.ShopMicroService.Repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;

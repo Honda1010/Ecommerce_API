@@ -1,6 +1,6 @@
 package com.EjadaFinalProject.ShopMicroService.Repo;
 
-import com.EjadaFinalProject.ShopMicroService.Model.CartItem;
+import com.EjadaFinalProject.ShopMicroService.Model.Cart.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CartItemRepo extends JpaRepository<CartItem,Integer> {

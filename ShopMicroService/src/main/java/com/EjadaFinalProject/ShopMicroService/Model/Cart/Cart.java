@@ -1,6 +1,5 @@
-package com.EjadaFinalProject.ShopMicroService.Model;
+package com.EjadaFinalProject.ShopMicroService.Model.Cart;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;

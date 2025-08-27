@@ -1,4 +1,4 @@
-package com.EjadaFinalProject.ShopMicroService.Model;
+package com.EjadaFinalProject.ShopMicroService.Model.Product;
 
 import jakarta.persistence.*;
 
