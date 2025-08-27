@@ -9,7 +9,8 @@ public class WalletTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer transactionId;
-    private String type;// "credit" or "debit"
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;// "credit" or "debit"
     private double amount;
     private LocalDateTime timestamp;
 
@@ -20,11 +21,11 @@ public class WalletTransaction {
     public WalletTransaction() {
     }
 
-    public WalletTransaction(Integer transactionId, String type, double amount, LocalDateTime timestamp) {
-        this.transactionId = transactionId;
+    public WalletTransaction(TransactionType type, double amount, LocalDateTime timestamp, Wallets wallet) {
         this.type = type;
         this.amount = amount;
         this.timestamp = timestamp;
+        this.wallet = wallet;
     }
 
     public Integer getTransactionId() {
@@ -43,11 +44,11 @@ public class WalletTransaction {
         this.wallet = wallet;
     }
 
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 

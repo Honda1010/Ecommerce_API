@@ -5,11 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-@Entity
-@Table(name = "inventory_products")
+
 public class InventoryProductDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;
     @NotBlank(message = "Product name is required")
     private String productName;

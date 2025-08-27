@@ -1,4 +1,4 @@
-package com.EjadaFinalProject.ShopMicroService.Exceptions;
+package com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,10 +1,10 @@
 package com.EjadaFinalProject.ShopMicroService.Service;
 
 import com.EjadaFinalProject.ShopMicroService.Dto.InventoryProductDto;
-import com.EjadaFinalProject.ShopMicroService.Exceptions.CartNotFoundException;
-import com.EjadaFinalProject.ShopMicroService.Exceptions.InventoryProductNotFoundException;
-import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductNotInStockException;
-import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductQuntityIsNotEnoughInStockException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions.CartNotFoundException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.InventoryProductNotFoundException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductNotInStockException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductQuntityIsNotEnoughInStockException;
 import com.EjadaFinalProject.ShopMicroService.Model.Cart;
 import com.EjadaFinalProject.ShopMicroService.Model.CartItem;
 import com.EjadaFinalProject.ShopMicroService.Model.ShopProduct;

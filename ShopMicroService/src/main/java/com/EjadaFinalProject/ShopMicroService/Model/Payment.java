@@ -1,9 +1,6 @@
 package com.EjadaFinalProject.ShopMicroService.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -13,14 +10,18 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
     private Integer userId;
+    @Column(unique = true)
+    private Integer orderId;
     private Double amount;
+    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
     private LocalDateTime date;
     public Payment() {
     }
-    public Payment(Integer id, Integer userId, Double amount, PaymentStatus status, LocalDateTime date) {
+    public Payment(Integer id, Integer userId,int orderId, Double amount, PaymentStatus status, LocalDateTime date) {
         Id = id;
         this.userId = userId;
+        this.orderId = orderId;
         this.amount = amount;
         this.status = status;
         this.date = date;
@@ -64,6 +65,12 @@ public class Payment {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+    public Integer getOrderId() {
+        return orderId;
+    }
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
 }

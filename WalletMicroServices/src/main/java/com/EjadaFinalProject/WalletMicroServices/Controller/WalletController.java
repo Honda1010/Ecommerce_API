@@ -78,5 +78,10 @@ public class WalletController {
         Wallets updatedToWallet = walletService.transferBetweenWallets(fromUserId, toUserId, amount);
         return ResponseEntity.ok(updatedToWallet);
     }
+    @GetMapping("/checkbalance/{userId}/{amount}")
+    ResponseEntity<Boolean> checkBalanceForUser(@PathVariable int userId, @PathVariable double amount) {
+        boolean hasEnoughBalance = walletService.checkBalance(userId, amount);
+        return ResponseEntity.ok(hasEnoughBalance);
+    }
 
 }

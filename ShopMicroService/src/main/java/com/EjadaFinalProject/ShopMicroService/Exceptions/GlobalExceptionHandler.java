@@ -1,6 +1,15 @@
 package com.EjadaFinalProject.ShopMicroService.Exceptions;
 
 import com.EjadaFinalProject.ShopMicroService.Dto.ErrorDto;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions.CartEmptyException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions.CartNotFoundException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderIsAlreadyCancelledException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderIsAlreadyPaidException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderNotFoundException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.InventoryProductNotFoundException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductAlreadyExistInShopException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductNotInStockException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductQuntityIsNotEnoughInStockException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -58,6 +67,14 @@ public class GlobalExceptionHandler extends  ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ProductNotInStockException.class)
     public final ResponseEntity<ErrorDto> handleProductNotInStovkExceptions(Exception ex, WebRequest request) throws Exception {
+        ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
+                ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.CONFLICT);
+
+    }
+    @ExceptionHandler(OrderIsAlreadyPaidException.class)
+    public final ResponseEntity<ErrorDto> handleOrderIsAlreadyPaidException(Exception ex, WebRequest request) throws Exception {
         ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
                 ex.getMessage(), request.getDescription(false));
 
