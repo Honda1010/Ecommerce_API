@@ -6,10 +6,8 @@ import com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions.CartNotF
 import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderIsAlreadyCancelledException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderIsAlreadyPaidException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderNotFoundException;
-import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.InventoryProductNotFoundException;
-import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductAlreadyExistInShopException;
-import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductNotInStockException;
-import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductQuntityIsNotEnoughInStockException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.*;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.WalletException.WalletServiceIsNotAvailableException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -103,6 +101,22 @@ public class GlobalExceptionHandler extends  ResponseEntityExceptionHandler {
                 ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.CONFLICT);
+
+    }
+    @ExceptionHandler(InventoryServiceIsNotAvailableException.class)
+    public final ResponseEntity<ErrorDto> handleInventoryServiceIsNotAvailableException(Exception ex, WebRequest request) throws Exception {
+        ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
+                ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
+
+    }
+    @ExceptionHandler(WalletServiceIsNotAvailableException.class)
+    public final ResponseEntity<ErrorDto> handleWalletServiceIsNotAvailableException(Exception ex, WebRequest request) throws Exception {
+        ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
+                ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
 
     }
 

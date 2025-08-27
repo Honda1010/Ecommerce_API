@@ -1,11 +1,13 @@
 package com.EjadaFinalProject.ShopMicroService.Service;
 
 import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderIsAlreadyPaidException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.WalletException.WalletServiceIsNotAvailableException;
 import com.EjadaFinalProject.ShopMicroService.Model.Payment.Payment;
 import com.EjadaFinalProject.ShopMicroService.Model.Payment.PaymentStatus;
 import com.EjadaFinalProject.ShopMicroService.Proxy.WalletProxy;
 import com.EjadaFinalProject.ShopMicroService.Repo.OrderRepo;
 import com.EjadaFinalProject.ShopMicroService.Repo.PaymentRepo;
+import com.EjadaFinalProject.ShopMicroService.Wrappers.WalletWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +19,21 @@ public class PaymentService {
     @Autowired
     private PaymentRepo paymentRepo;
     @Autowired
-    private WalletProxy walletProxy;
+    private WalletWrapper walletWrapper;
     @Autowired
     private OrderRepo orderRepo;
 
     public Payment Pay(int userId, int orderId) {
         double amount = orderRepo.findById(orderId).get().getTotalPrice();
-        boolean paymentStatus = walletProxy.checkBalanceForUser(userId, amount);
+        boolean paymentStatus = walletWrapper.checkBalanceForUser(userId, amount);
         Payment FoundedPayment = paymentRepo.findByOrderIdAndUserId(orderId, userId);
         if (FoundedPayment != null && FoundedPayment.getStatus() == PaymentStatus.FAILED) {
             FoundedPayment.setDate(LocalDateTime.now());
             if (!paymentStatus) {
                 paymentRepo.save(FoundedPayment);
-                throw new RuntimeException("Payment failed due to insufficient balance.");
+                throw new RuntimeException("Payment failed due to insufficient balance or Connection Error.");
             }
-            walletProxy.withdrawFromWalletForUser(userId, amount);
+            walletWrapper.withdrawFromWalletForUser(userId, amount);
             FoundedPayment.setStatus(PaymentStatus.COMPLETED);
             return paymentRepo.save(FoundedPayment);
         }
@@ -46,9 +48,14 @@ public class PaymentService {
             if (!paymentStatus) {
                 payment.setStatus(PaymentStatus.FAILED);
                 paymentRepo.save(payment);
-                throw new RuntimeException("Payment failed due to insufficient balance.");
+                throw new RuntimeException("Payment failed due to insufficient balance or Connection Error.");
             }
-            walletProxy.withdrawFromWalletForUser(userId, amount);
+            String msg= walletWrapper.withdrawFromWalletForUser(userId, amount);
+            if (msg==null){
+                payment.setStatus(PaymentStatus.FAILED);
+                paymentRepo.save(payment);
+                throw new WalletServiceIsNotAvailableException(" Wallet Service is not available. Cannot process payment at this time.");
+            }
             payment.setStatus(PaymentStatus.COMPLETED);
             return paymentRepo.save(payment);
         }
@@ -56,7 +63,10 @@ public class PaymentService {
     public void cancelPayment(int paymentId) {
         Payment payment = paymentRepo.findById(paymentId).get();
         if (payment.getStatus() == PaymentStatus.COMPLETED) {
-            walletProxy.depositToWalletForUser(payment.getUserId(),payment.getAmount());
+            String msg = walletWrapper.depositToWalletForUser(payment.getUserId(),payment.getAmount());
+            if (msg == null) {
+                throw new WalletServiceIsNotAvailableException("Wallet Service is not available. Cannot cancel payment at this time.");
+            }
             payment.setStatus(PaymentStatus.CANCELLED);
             paymentRepo.save(payment);
         } else {

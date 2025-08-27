@@ -3,6 +3,7 @@ package com.EjadaFinalProject.ShopMicroService.Service;
 import com.EjadaFinalProject.ShopMicroService.Dto.InventoryProductDto;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions.CartNotFoundException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.InventoryProductNotFoundException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.InventoryServiceIsNotAvailableException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductNotInStockException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductQuntityIsNotEnoughInStockException;
 import com.EjadaFinalProject.ShopMicroService.Model.Cart.Cart;
@@ -12,6 +13,7 @@ import com.EjadaFinalProject.ShopMicroService.Proxy.InventoryProxy;
 import com.EjadaFinalProject.ShopMicroService.Repo.CartItemRepo;
 import com.EjadaFinalProject.ShopMicroService.Repo.CartRepo;
 import com.EjadaFinalProject.ShopMicroService.Repo.ProductRepo;
+import com.EjadaFinalProject.ShopMicroService.Wrappers.InventoryWrapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,8 @@ public class CartService {
     @Autowired
     private CartItemRepo cartItemRepo;
     @Autowired
-    private InventoryProxy inventoryProxy;
+    private InventoryWrapper inventoryWrapper;
+
     public Cart CreateCart(int userId){
         Cart cart = new Cart();
         cart.setUserId(userId);
@@ -39,8 +42,11 @@ public class CartService {
             cart = CreateCart(userId);
         }
         ShopProduct product = productRepo.findById(productId).get();
-        InventoryProductDto inventoryProduct = inventoryProxy.GetProductById(product.getInventoryProductId());
+        InventoryProductDto inventoryProduct = inventoryWrapper.GetProductById(product.getInventoryProductId());
         // Check if the product exists in inventory and has enough quantity
+        if (inventoryProduct.getProductName().equals("N/A") && inventoryProduct.getProductDescription().equals("Inventory service unavailable")) {
+            throw new InventoryServiceIsNotAvailableException("Inventory service unavailable Try again Later");
+        }
         if (inventoryProduct == null) throw new InventoryProductNotFoundException("Product not found in inventory with id: " + product.getInventoryProductId());
         if (inventoryProduct.getProductQuantity() < quantity) throw new ProductQuntityIsNotEnoughInStockException("Product quantity less than quantity to add to cart for product id: " + productId);
         if (inventoryProduct.getProductQuantity() <= 0) throw new ProductNotInStockException("this product is out of stock for product id: " + productId);

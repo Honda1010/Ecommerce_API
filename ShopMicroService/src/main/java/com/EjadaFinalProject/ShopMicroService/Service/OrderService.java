@@ -4,6 +4,7 @@ import com.EjadaFinalProject.ShopMicroService.Dto.InventoryProductDto;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions.CartEmptyException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.CartExceptions.CartNotFoundException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderIsAlreadyCancelledException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.InventoryServiceIsNotAvailableException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.ProductsExceptions.ProductQuntityIsNotEnoughInStockException;
 import com.EjadaFinalProject.ShopMicroService.Model.Cart.Cart;
 import com.EjadaFinalProject.ShopMicroService.Model.Cart.CartItem;
@@ -15,6 +16,7 @@ import com.EjadaFinalProject.ShopMicroService.Proxy.InventoryProxy;
 import com.EjadaFinalProject.ShopMicroService.Repo.CartRepo;
 import com.EjadaFinalProject.ShopMicroService.Repo.OrderRepo;
 import com.EjadaFinalProject.ShopMicroService.Repo.ProductRepo;
+import com.EjadaFinalProject.ShopMicroService.Wrappers.InventoryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +29,12 @@ public class OrderService {
     @Autowired
     private CartRepo cartRepo;
     @Autowired
-    private InventoryProxy inventoryProxy;
-    @Autowired
     private ProductRepo productRepo;
     @Autowired
     private CartService cartService;
+    @Autowired
+    private InventoryWrapper inventoryWrapper;
+
 
     private Order CreateOrder(int userId){
         Order order = new Order();
@@ -52,11 +55,17 @@ public class OrderService {
             if (product == null){
                 throw new CartNotFoundException("Product not found for cart id: " + cartItem.getProductId());
             }
-            InventoryProductDto inventoryProductDto = inventoryProxy.GetProductById(product.getInventoryProductId());
+            InventoryProductDto inventoryProductDto = inventoryWrapper.GetProductById(product.getInventoryProductId());
+            if (inventoryProductDto.getProductName().equals("N/A") && inventoryProductDto.getProductDescription().equals("Inventory service unavailable")) {
+                throw new InventoryServiceIsNotAvailableException("Inventory service unavailable Try again Later");
+            }
             if (inventoryProductDto.getProductQuantity() < cartItem.getQuantity()){
                 throw new ProductQuntityIsNotEnoughInStockException("Product quantity less than quantity to add to Your Order for product id: " + product.getInventoryProductId());
             }
-            inventoryProxy.reduceProduct(product.getInventoryProductId(), cartItem.getQuantity());
+            String msg= inventoryWrapper.reduceProduct(product.getInventoryProductId(), cartItem.getQuantity());
+            if(!msg.equals("success")){
+                throw new InventoryServiceIsNotAvailableException("Inventory service unavailable Try again Later");
+            }
             OrderItem orderItem = new OrderItem(cartItem.getProductId(),cartItem.getQuantity(),cartItem.getPrice(),order);
             order.getOrderItems().add(orderItem);
 
@@ -79,7 +88,11 @@ public class OrderService {
         order.setOrderStatus(OrderStatus.CANCELLED);
         for (OrderItem orderItem : order.getOrderItems()){
             ShopProduct product = productRepo.findById(orderItem.getProductId()).get();
-            inventoryProxy.releaseproduct(product.getInventoryProductId(), orderItem.getQuantity());
+            String msg= inventoryWrapper.releaseproduct(product.getInventoryProductId(), orderItem.getQuantity());
+            if(!msg.equals("success")){
+                throw new InventoryServiceIsNotAvailableException("Inventory service unavailable Try again Later");
+            }
+
         }
         orderRepo.save(order);
     }

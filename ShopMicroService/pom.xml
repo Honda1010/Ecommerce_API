@@ -67,7 +67,12 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
+        <!-- Resilience4j -->
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-spring-boot3</artifactId>
+            <version>2.2.0</version>
+        </dependency>
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
