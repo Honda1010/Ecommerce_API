@@ -4,6 +4,7 @@ import com.EjadaFinalProject.ShopMicroService.Model.Product.ShopProduct;
 import com.EjadaFinalProject.ShopMicroService.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/add/{InventoryId}" )
     public ResponseEntity<ShopProduct> AddProductFromInventory(@PathVariable int InventoryId){
        ShopProduct product= productService.addProductFromInventory(InventoryId);

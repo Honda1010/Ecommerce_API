@@ -1,6 +1,8 @@
 package com.EjadaFinalProject.ShopMicroService.Service;
 
 import com.EjadaFinalProject.ShopMicroService.Exceptions.OrderExceptions.OrderIsAlreadyPaidException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.PymentException.NotCompletedPaymentCancelException;
+import com.EjadaFinalProject.ShopMicroService.Exceptions.PymentException.PaymentNotFoundException;
 import com.EjadaFinalProject.ShopMicroService.Exceptions.WalletException.WalletServiceIsNotAvailableException;
 import com.EjadaFinalProject.ShopMicroService.Model.Payment.Payment;
 import com.EjadaFinalProject.ShopMicroService.Model.Payment.PaymentStatus;
@@ -61,7 +63,7 @@ public class PaymentService {
         }
     }
     public void cancelPayment(int paymentId) {
-        Payment payment = paymentRepo.findById(paymentId).get();
+        Payment payment = paymentRepo.findById(paymentId).orElseThrow(()-> new PaymentNotFoundException("Payment not found for payment ID: " + paymentId));
         if (payment.getStatus() == PaymentStatus.COMPLETED) {
             String msg = walletWrapper.depositToWalletForUser(payment.getUserId(),payment.getAmount());
             if (msg == null) {
@@ -70,7 +72,7 @@ public class PaymentService {
             payment.setStatus(PaymentStatus.CANCELLED);
             paymentRepo.save(payment);
         } else {
-            throw new RuntimeException("Only completed payments can be cancelled.");
+            throw new NotCompletedPaymentCancelException("Only completed payments can be cancelled.");
         }
     }
     public List<Payment> findPaymentsByUserId(int userId) {

@@ -5,6 +5,7 @@ import com.EjadaFinalProject.ShopMicroService.Model.Payment.PaymentStatus;
 import com.EjadaFinalProject.ShopMicroService.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,12 +32,14 @@ public class PaymentController {
         List<Payment> payment= paymentService.findPaymentsByUserId(userId);
         return ResponseEntity.ok(payment);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all" )
     public ResponseEntity<List<Payment>> getAllPayments()
     {
         List<Payment> payment= paymentService.findAllPayments();
         return ResponseEntity.ok(payment);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{paymentId}" )
     public ResponseEntity<String> deletePaymentById(@PathVariable int paymentId) {
         paymentService.deletePayment(paymentId);
