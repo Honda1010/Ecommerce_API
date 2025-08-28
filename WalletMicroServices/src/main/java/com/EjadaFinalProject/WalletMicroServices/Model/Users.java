@@ -1,5 +1,6 @@
 package com.EjadaFinalProject.WalletMicroServices.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -30,6 +31,9 @@ public class Users implements UserDetails {
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Wallets wallet;
     public Users(String username, String email, String phoneNumber, String password, UserRole role) {
         this.username = username;
         this.email = email;

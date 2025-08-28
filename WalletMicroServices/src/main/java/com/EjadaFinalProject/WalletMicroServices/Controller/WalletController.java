@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -27,11 +28,13 @@ public class WalletController {
     private WalletService walletService;
 
     @PostMapping("/create/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<Wallets> createWalletForUser(@PathVariable Integer userId) {
         Wallets savedWallet = walletService.CreateWallet(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedWallet);
     }
     @PostMapping("/update/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<Wallets> updateWalletForUser(@PathVariable int userId, @RequestBody Wallets wallet) {
         Wallets updatedWallet = walletService.UpdateWallet(userId, wallet);
         return ResponseEntity.ok(updatedWallet);
@@ -52,11 +55,13 @@ public class WalletController {
         return ResponseEntity.ok(wallet);
     }
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<Void> deleteWalletForUser(@PathVariable int userId) {
         walletService.DeleteWallet(userId);
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<List<Wallets>> getAllWallets() {
         List<Wallets> wallets = walletRepo.findAll();
         return ResponseEntity.ok(wallets);

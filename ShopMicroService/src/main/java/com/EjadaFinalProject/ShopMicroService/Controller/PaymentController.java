@@ -32,15 +32,15 @@ public class PaymentController {
         List<Payment> payment= paymentService.findPaymentsByUserId(userId);
         return ResponseEntity.ok(payment);
     }
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all" )
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Payment>> getAllPayments()
     {
         List<Payment> payment= paymentService.findAllPayments();
         return ResponseEntity.ok(payment);
     }
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{paymentId}" )
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deletePaymentById(@PathVariable int paymentId) {
         paymentService.deletePayment(paymentId);
         return ResponseEntity.ok("Payment with id " + paymentId + " is Deleted");

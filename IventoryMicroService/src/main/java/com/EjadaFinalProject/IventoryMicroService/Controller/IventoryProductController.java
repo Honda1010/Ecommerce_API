@@ -13,7 +13,6 @@ import java.util.List;
 
 @RequestMapping(path = "/inventory")
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
 public class IventoryProductController {
     @Autowired
     private ProductService productService;
@@ -25,23 +24,27 @@ public class IventoryProductController {
         return ResponseEntity.ok(foundedproduct);
     }
     @GetMapping(path = "/products")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<List<InventoryProduct>> GetAllProducts()
     {
         List<InventoryProduct> products = productService.GetAllProduct();
         return ResponseEntity.ok(products);
     }
     @PostMapping(path = "/products/add")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<InventoryProduct> addProduct(@Valid @RequestBody InventoryProduct product)
     {
         InventoryProduct NewProduct= productService.AddProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(NewProduct);
     }
     @DeleteMapping(path = "/products/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     void  deleteProduct(@PathVariable int id)
     {
         productService.DeleteProductById(id);
     }
     @PostMapping(path = "/products/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<InventoryProduct>  updateProduct(@Valid @RequestBody InventoryProduct product, @PathVariable int id)
     {
         InventoryProduct UpdatedProduct= productService.UpdateProduct(id, product);

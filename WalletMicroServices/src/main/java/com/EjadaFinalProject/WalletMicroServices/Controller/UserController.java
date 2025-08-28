@@ -35,4 +35,9 @@ public class UserController {
         userService.DeleteUserById(userid);
         return ResponseEntity.ok("User deleted successfully");
     }
+    @GetMapping("/{userid}")
+    public ResponseEntity<Users> GetUserById(@PathVariable int userid) {
+        Users user = userService.GetUserById(userid);
+        return ResponseEntity.ok(user);
+    }
 }

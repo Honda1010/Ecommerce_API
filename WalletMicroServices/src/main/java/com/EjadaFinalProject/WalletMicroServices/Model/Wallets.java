@@ -1,6 +1,7 @@
 package com.EjadaFinalProject.WalletMicroServices.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -11,12 +12,15 @@ public class Wallets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer walletId;
-    @JsonIgnore
-    private Integer userId;
     private double balance=0.0;
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<WalletTransaction> transactions;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId", referencedColumnName = "userId", unique = true)
+    @JsonManagedReference
+    @JsonIgnore
+    private Users user;
 
     public List<WalletTransaction> getTransactions() {
         return transactions;
@@ -29,10 +33,10 @@ public class Wallets {
     public Wallets() {
     }
 
-    public Wallets(Integer walletId, Integer userId, double balance) {
+    public Wallets(Integer walletId,Users User, double balance) {
         this.walletId = walletId;
-        this.userId = userId;
         this.balance = balance;
+        this.user=User;
     }
 
     public Integer getWalletId() {
@@ -43,12 +47,11 @@ public class Wallets {
         this.walletId = walletId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Users getUser() {
+        return user;
     }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     public double getBalance() {

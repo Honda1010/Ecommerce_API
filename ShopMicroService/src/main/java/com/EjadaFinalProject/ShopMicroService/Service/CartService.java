@@ -31,6 +31,9 @@ public class CartService {
     @Autowired
     private InventoryWrapper inventoryWrapper;
 
+    @Autowired
+    private InventoryProxy inventoryProxy;
+
     public Cart CreateCart(int userId){
         Cart cart = new Cart();
         cart.setUserId(userId);

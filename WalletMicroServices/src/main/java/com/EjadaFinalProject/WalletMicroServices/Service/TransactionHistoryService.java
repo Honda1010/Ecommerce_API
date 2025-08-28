@@ -18,7 +18,7 @@ public class TransactionHistoryService {
     @Autowired
     TransactionRepo transactionRepo;
     public List<WalletTransaction> GetTransactionHistory(int userId) {
-        Wallets wallet = walletRepo.findByUserId(userId).orElseThrow(()-> new WalletNotFoundException("Wallet not found for user ID: " + userId));
+        Wallets wallet = walletRepo.findByUser_UserId(userId).orElseThrow(()-> new WalletNotFoundException("Wallet not found for user ID: " + userId));
         List<WalletTransaction> transactions = transactionRepo.findByWallet_WalletId(wallet.getWalletId());
         return transactions;
     }
