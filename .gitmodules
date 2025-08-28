@@ -1,0 +1,3 @@
+[submodule "Config_Repo"]
+	path = Config_Repo
+	url = https://github.com/Honda1010/Config_Repo.git
