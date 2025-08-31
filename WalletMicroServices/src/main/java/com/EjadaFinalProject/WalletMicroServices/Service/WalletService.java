@@ -4,13 +4,12 @@ import com.EjadaFinalProject.WalletMicroServices.Exceptions.BalanceNotEnoughExce
 import com.EjadaFinalProject.WalletMicroServices.Exceptions.UserNotFoundException;
 import com.EjadaFinalProject.WalletMicroServices.Exceptions.WalletAlreadyExistException;
 import com.EjadaFinalProject.WalletMicroServices.Exceptions.WalletNotFoundException;
-import com.EjadaFinalProject.WalletMicroServices.Model.TransactionType;
-import com.EjadaFinalProject.WalletMicroServices.Model.Users;
-import com.EjadaFinalProject.WalletMicroServices.Model.WalletTransaction;
-import com.EjadaFinalProject.WalletMicroServices.Model.Wallets;
+import com.EjadaFinalProject.WalletMicroServices.Model.*;
+import com.EjadaFinalProject.WalletMicroServices.Repo.SnapShotRepo;
 import com.EjadaFinalProject.WalletMicroServices.Repo.TransactionRepo;
 import com.EjadaFinalProject.WalletMicroServices.Repo.UserRepo;
 import com.EjadaFinalProject.WalletMicroServices.Repo.WalletRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +23,8 @@ public class WalletService {
     private TransactionRepo transactionRepo;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private SnapShotRepo snapShotRepo;
     public Wallets CreateWallet(int id){
         if(walletRepo.findByUser_UserId(id).isPresent()){
             throw new WalletAlreadyExistException("This User with id: "+id+" already has a wallet");
@@ -49,6 +50,7 @@ public class WalletService {
         Wallets wallet = walletRepo.findByUser_UserId(id).orElseThrow(()->new WalletNotFoundException("Wallet not found for user ID: " + id));
         walletRepo.delete(wallet);
     }
+    @Transactional
     public Wallets depositToWallet(int id, double amount){
         Wallets wallet = walletRepo.findByUser_UserId(id).orElseThrow(()->new WalletNotFoundException("Wallet not found for user ID: " + id));
         // Create a new transaction record
@@ -56,8 +58,11 @@ public class WalletService {
         transactionRepo.save(walletTransaction);
         // Update the wallet balance
         wallet.setBalance(wallet.getBalance() + amount);
+        Wallet_SnapShot snapShot = new Wallet_SnapShot(wallet.getWalletId(),wallet.getBalance(),walletTransaction);
+        snapShotRepo.save(snapShot);
         return walletRepo.save(wallet);
     }
+    @Transactional
     public Wallets withdrawFromWallet(int id, double amount) {
         Wallets wallet = walletRepo.findByUser_UserId(id).orElseThrow(()->new WalletNotFoundException("Wallet not found for user ID: " + id));
         if (wallet.getBalance() < amount) {
@@ -66,12 +71,15 @@ public class WalletService {
         WalletTransaction walletTransaction = new WalletTransaction(TransactionType.WITHDRAWAL,amount, LocalDateTime.now(),wallet);
         transactionRepo.save(walletTransaction);
         wallet.setBalance(wallet.getBalance() - amount);
+        Wallet_SnapShot snapShot = new Wallet_SnapShot(wallet.getWalletId(),wallet.getBalance(),walletTransaction);
+        snapShotRepo.save(snapShot);
         return walletRepo.save(wallet);
     }
     public Boolean checkBalance(int userid, double amount){
         Wallets wallet = walletRepo.findByUser_UserId(userid).orElseThrow(()->new WalletNotFoundException("Wallet not found for user ID: " + userid));
         return wallet.getBalance() >= amount;
     }
+    @Transactional
     public Wallets transferBetweenWallets(int fromUserId,int toUserId,double amount){
         Wallets fromWallet = walletRepo.findByUser_UserId(fromUserId).orElseThrow(()->new WalletNotFoundException("Wallet not found for user ID: " + fromUserId));
         Wallets toWallet = walletRepo.findByUser_UserId(toUserId).orElseThrow(()->new WalletNotFoundException("Wallet not found for user ID: " + toUserId));
@@ -85,6 +93,10 @@ public class WalletService {
         fromWallet.setBalance(fromWallet.getBalance() - amount);
         toWallet.setBalance(toWallet.getBalance() + amount);
         walletRepo.save(fromWallet);
+        Wallet_SnapShot fromSnapShot = new Wallet_SnapShot(fromWallet.getWalletId(),fromWallet.getBalance(),fromTransaction);
+        snapShotRepo.save(fromSnapShot);
+        Wallet_SnapShot toSnapShot = new Wallet_SnapShot(toWallet.getWalletId(),toWallet.getBalance(),toTransaction);
+        snapShotRepo.save(toSnapShot);
         return walletRepo.save(toWallet);
     }
 

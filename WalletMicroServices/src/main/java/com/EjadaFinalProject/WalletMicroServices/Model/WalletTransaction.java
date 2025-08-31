@@ -1,5 +1,6 @@
 package com.EjadaFinalProject.WalletMicroServices.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,10 @@ public class WalletTransaction {
 
     @ManyToOne
     @JoinColumn(name = "walletId",nullable = false)
+    @JsonIgnore
     private Wallets wallet;
+    @OneToOne(mappedBy = "walletTransaction",cascade = CascadeType.ALL)
+    private Wallet_SnapShot snapShot;
 
     public WalletTransaction() {
     }
@@ -66,5 +70,11 @@ public class WalletTransaction {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+    public Wallet_SnapShot getSnapShot() {
+        return snapShot;
+    }
+    public void setSnapShot(Wallet_SnapShot snapShot) {
+        this.snapShot = snapShot;
     }
 }

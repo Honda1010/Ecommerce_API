@@ -44,7 +44,7 @@ public class CartService {
         if (cart == null) {
             cart = CreateCart(userId);
         }
-        ShopProduct product = productRepo.findById(productId).get();
+        ShopProduct product = productRepo.findById(productId).orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
         InventoryProductDto inventoryProduct = inventoryWrapper.GetProductById(product.getInventoryProductId());
         // Check if the product exists in inventory and has enough quantity
         if (inventoryProduct.getProductName().equals("N/A") && inventoryProduct.getProductDescription().equals("Inventory service unavailable")) {
