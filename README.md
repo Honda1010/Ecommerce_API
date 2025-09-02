@@ -55,7 +55,6 @@ The project demonstrates modular, scalable, and fault-tolerant architecture for 
              /          |          \
             /           |           \
            ▼            ▼            ▼
-
 +----------------+ +----------------+ +----------------+
 | Shop MicSvc    | |  Inventory Svc | |  Wallet MicSvc |
 +----------------+ +----------------+ +----------------+
