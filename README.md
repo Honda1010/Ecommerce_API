@@ -38,6 +38,7 @@ The project demonstrates modular, scalable, and fault-tolerant architecture for 
 ---
 
 ## 🏗️ Architecture
+```text
             +---------------------+
             |  Config Server      |
             +---------------------+
@@ -57,7 +58,7 @@ The project demonstrates modular, scalable, and fault-tolerant architecture for 
 +----------------+  +----------------+  +----------------+
 |  Shop Service  |  | Inventory Svc  |  | Wallet Service |
 +----------------+  +----------------+  +----------------+
-
+```
 
 ---
 
