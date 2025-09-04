@@ -1,10 +1,11 @@
-package com.EjadaFinalProject.IventoryMicroService.Authuntication.Services;
+package com.EjadaFinalProject.IventoryMicroService.Security.Services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -13,7 +14,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "YqtYmpmMA+QpNxGGaau/TrqQtCbbQr/Cj6BgmmRr46g=";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY ;
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }

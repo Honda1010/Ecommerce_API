@@ -1,8 +1,8 @@
-package com.EjadaFinalProject.IventoryMicroService.Authuntication.Filters;
+package com.EjadaFinalProject.IventoryMicroService.Security.Filters;
 
 
 
-import com.EjadaFinalProject.IventoryMicroService.Authuntication.Services.JwtService;
+import com.EjadaFinalProject.IventoryMicroService.Security.Services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

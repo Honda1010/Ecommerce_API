@@ -1,8 +1,7 @@
-package com.EjadaFinalProject.IventoryMicroService.Authuntication.Config;
+package com.EjadaFinalProject.ShopMicroService.Security.Config;
 
 
-
-import com.EjadaFinalProject.IventoryMicroService.Authuntication.Filters.JwtAuthunticationFilter;
+import com.EjadaFinalProject.ShopMicroService.Security.Filters.JwtAuthunticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,7 +28,11 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/inventory/**").permitAll()
+                        .requestMatchers("/payments/**").permitAll()
+                        .requestMatchers("/cart/**").permitAll()
+                        .requestMatchers("/orders/**").permitAll()
+                        .requestMatchers("/products/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

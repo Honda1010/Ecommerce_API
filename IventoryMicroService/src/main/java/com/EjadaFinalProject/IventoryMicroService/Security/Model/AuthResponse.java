@@ -1,4 +1,4 @@
-package com.EjadaFinalProject.IventoryMicroService.Authuntication.Model;
+package com.EjadaFinalProject.IventoryMicroService.Security.Model;
 
 import lombok.Builder;
 import lombok.Data;

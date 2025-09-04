@@ -1,4 +1,4 @@
-package com.EjadaFinalProject.ShopMicroService.Authuntication.Config;
+package com.EjadaFinalProject.ShopMicroService.Security.Config;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
